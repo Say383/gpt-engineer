@@ -3,6 +3,9 @@ import re
 
 from typing import List, Tuple
 
+from gpt_engineer.db import DB
+from gpt_engineer.file_selector import FILE_LIST_NAME
+
 
 def parse_chat(chat) -> List[Tuple[str, str]]:
     """
@@ -51,7 +54,7 @@ def parse_chat(chat) -> List[Tuple[str, str]]:
     return files
 
 
-def to_files(chat, workspace):
+def to_files(chat: str, workspace: DB):
     """
     Parse the chat and add all extracted files to the workspace.
 
@@ -59,10 +62,10 @@ def to_files(chat, workspace):
     ----------
     chat : str
         The chat to parse.
-    workspace : dict
+    workspace : DB
         The workspace to add the files to.
     """
-    workspace["all_output.txt"] = chat
+    workspace["all_output.txt"] = chat  # TODO store this in memory db instead
 
     files = parse_chat(chat)
     for file_name, file_content in files:
@@ -79,20 +82,20 @@ def overwrite_files(chat, dbs):
         The chat containing the AI files.
     dbs : DBs
         The database containing the workspace.
-    replace_files : dict
-        A dictionary mapping file names to file paths of the local files.
     """
-    dbs.workspace["all_output.txt"] = chat
+    dbs.workspace["all_output.txt"] = chat  # TODO store this in memory db instead
 
     files = parse_chat(chat)
     for file_name, file_content in files:
         if file_name == "README.md":
-            dbs.workspace["LAST_MODIFICATION_README.md"] = file_content
+            dbs.workspace[
+                "LAST_MODIFICATION_README.md"
+            ] = file_content  # TODO store this in memory db instead
         else:
             dbs.workspace[file_name] = file_content
 
 
-def get_code_strings(input) -> dict[str, str]:
+def get_code_strings(input: DB) -> dict[str, str]:
     """
     Read file_list.txt and return file names and their content.
 
@@ -106,13 +109,12 @@ def get_code_strings(input) -> dict[str, str]:
     dict[str, str]
         A dictionary mapping file names to their content.
     """
-    files_paths = input["file_list.txt"].strip().split("\n")
+    files_paths = input[FILE_LIST_NAME].strip().split("\n")
     files_dict = {}
     for full_file_path in files_paths:
         with open(full_file_path, "r") as file:
             file_data = file.read()
         if file_data:
-            # TODO: Should below be the full path?
             file_name = os.path.relpath(full_file_path, input.path)
             files_dict[file_name] = file_data
     return files_dict

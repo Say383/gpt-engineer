@@ -11,7 +11,7 @@ from eval_tools import (
     load_evaluations_from_file,
 )
 
-from gpt_engineer.db import DB
+from gpt_engineer.data.file_repository import FileRepository
 
 app = typer.Typer()  # creates a CLI app
 
@@ -20,7 +20,7 @@ def single_evaluate(eval_ob: dict) -> list[bool]:
     """Evaluates a single prompt for creating a new project."""
     print(f"running evaluation: {eval_ob['name']}")
 
-    workspace = DB(eval_ob["project_root"])
+    workspace = FileRepository(eval_ob["project_root"])
     base_abs = Path(os.getcwd())
     code_base_abs = base_abs / eval_ob["project_root"]
 
@@ -43,7 +43,7 @@ def single_evaluate(eval_ob: dict) -> list[bool]:
             "python",
             "-u",  # Unbuffered output
             "-m",
-            "gpt_engineer.main",
+            "gpt_engineer.cli.main",
             eval_ob["project_root"],
             "--steps",
             "eval_new_code",
@@ -58,7 +58,7 @@ def single_evaluate(eval_ob: dict) -> list[bool]:
     process.wait()  # we want to wait until it finishes.
 
     print("running tests on the newly generated code")
-    # TODO: test the code we should have an executable name
+    # test the code with the executable name in the config file
     evaluation_results = []
     for test_case in eval_ob["expected_results"]:
         print(f"checking: {test_case['type']}")

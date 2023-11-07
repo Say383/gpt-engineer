@@ -17,6 +17,7 @@ build/
 .env.sh
 venv/
 ENV/
+venv_test_installation/
 
 # IDE-specific files
 .vscode/
@@ -47,10 +48,6 @@ archive
 todo
 scratchpad
 
-# Ignore GPT Engineer files
-projects
-!projects/example
-
 # Pyenv
 .python-version
 
@@ -79,3 +76,4 @@ docs/db/
 
 poetry.lock
 .aider*
+.gpteng

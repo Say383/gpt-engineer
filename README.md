@@ -47,43 +47,29 @@ Choose **one** of:
 
 Check the [Windows README](./WINDOWS_README.md) for windows usage.
 
+**Other ways to run:**
+- Use Docker ([instructions](docker/README.md))
+- Do everything in your browser:
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/AntonOsika/gpt-engineer/codespaces)
+
 ## Usage
 
 There are two ways to work with GPT-engineer: new code mode (the default), and improve existing code mode (the `-i` option).
 
 ### Creating new code
-- Create an empty folder for your project
-  - If inside the repo, you can run: `cp -r projects/example/ projects/my-new-project`
-- Create a file called `prompt` (no extension) and fill it with instructions
-- `gpt-engineer <project_dir>`
-  - For example: `gpt-engineer projects/my-new-project`
+- Create an empty folder for your project anywhere on your computer
+- Create a file called `prompt` (no extension) inside your new folder and fill it with instructions
+- Run `gpt-engineer <project_dir>` with a relative path to your folder
+  - For example: `gpt-engineer projects/my-new-project` from the gpt-engineer directory root with your new folder in `projects/`
 
 ### Improving Existing Code
-- Take the code you want to improve and place it in a folder inside the `projects/` folder.  The code can be another Git repository as `projects/` is ignored by Git.
-- Create a file called prompt (no extension) and fill it with instructions for how you want to improve the code.
-- `gpt-engineer <project_dir> -i`
-- You will be prompted to select files which you want to work with, you can use the GUI or a command line tool to select the files to work with.  You only need to select on the first run, subsequent runs will allow you to reuse the file list from earlier runs.
+- Locate a folder with code which you want to improve anywhere on your computer
+- Create a file called `prompt` (no extension) inside your new folder and fill it with instructions for how you want to improve the code
+- Run `gpt-engineer <project_dir> -i` with a relative path to your folder
+  - For example: `gpt-engineer projects/my-old-project` from the gpt-engineer directory root with your folder in `projects/`
 
 By running gpt-engineer you agree to our [terms](https://github.com/AntonOsika/gpt-engineer/blob/main/TERMS_OF_USE.md).
 
-**Results**
-
-Check the generated files in `projects/my-new-project/workspace`
-
-**Workflow**
-
-`gpt-engineer --help` lets you see all available options.
-
-For example:
-- To improve any existing project, use the flag: `-i`
-- To give feedback to/improve a gpt-engineer generated project, use: `--steps use_feedback`
-
-**Alternatives**
-
-You can check [Docker instructions](docker/README.md) to use Docker, or simply
-do everything in your browser:
-
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/AntonOsika/gpt-engineer/codespaces)
 
 ## Features
 
@@ -91,12 +77,14 @@ You can specify the "identity" of the AI agent by editing the files in the `prep
 
 Editing the `preprompts`, and evolving how you write the project prompt, is how you make the agent remember things between projects.
 
+You can also automatically copy all `preprompts` files into your project folder using the cli parameter `--use-custom-prepompts`. This way you can have custom preprompts for all of your projects without the need to edit the main files. If you don't want to use the project specific prepromt files, simply delete them or run `gpt-engineer` without the cli param.
+
 Each step in `steps.py` will have its communication history with GPT4 stored in the logs folder, and can be rerun with `scripts/rerun_edited_message_logs.py`.
 
 You can also run with open source models, like WizardCoder. See the [documentation](https://gpt-engineer.readthedocs.io/en/latest/open_models.html) for example instructions.
 
-
 ## Vision
+
 The gpt-engineer community is building the **open platform for devs to tinker with and build their personal code-generation toolbox**.
 
 If you are interested in contributing to this, we would be interested in having you.
@@ -110,4 +98,6 @@ We are currently looking for more maintainers and community organizers. Email an
 
 ## Example
 
-https://github.com/AntonOsika/gpt-engineer/assets/4467025/6e362e45-4a94-4b0d-973d-393a31d92d9b
+
+
+https://github.com/AntonOsika/gpt-engineer/assets/4467025/40d0a9a8-82d0-4432-9376-136df0d57c99

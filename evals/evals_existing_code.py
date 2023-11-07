@@ -11,8 +11,8 @@ from eval_tools import (
     load_evaluations_from_file,
 )
 
-from gpt_engineer.chat_to_files import parse_chat
-from gpt_engineer.db import DB
+from gpt_engineer.core.chat_to_files import parse_chat
+from gpt_engineer.data.file_repository import FileRepository
 
 app = typer.Typer()  # creates a CLI app
 
@@ -25,7 +25,7 @@ def single_evaluate(eval_ob: dict) -> list[bool]:
     # load the known files into the project
     # the files can be anywhere in the projects folder
 
-    workspace = DB(eval_ob["project_root"])
+    workspace = FileRepository(eval_ob["project_root"])
     file_list_string = ""
     code_base_abs = Path(os.getcwd()) / eval_ob["project_root"]
 
@@ -54,7 +54,7 @@ def single_evaluate(eval_ob: dict) -> list[bool]:
             "python",
             "-u",  # Unbuffered output
             "-m",
-            "gpt_engineer.main",
+            "gpt_engineer.cli.main",
             eval_ob["project_root"],
             "--steps",
             "eval_improve_code",
